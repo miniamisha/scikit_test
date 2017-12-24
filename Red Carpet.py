@@ -1,0 +1,36 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Dec 23 13:28:12 2017
+
+@author: amisha
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+dataset=pd.read_csv('/home/amisha/Downloads/IMDB-Movie-Data.csv')
+X=dataset.iloc[:,[2,3]].values
+y=dataset.iloc[:,4].values
+
+
+from sklearn.cross_validation import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=.25,random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+sc=StandardScaler()
+X_train=sc.fit_transform(X_train)
+X_test=sc.transform(X_test)
+
+from sklearn.svm import SVC
+classifier=SVC(kernel='rbf',random_state=0)
+classifier.fit(X_train,y_train)
+
+
+y_pred=classifier.predict(X_test)
+from sklearn.metrics import confused_matrix
+cm=confusion_matrix(y_test,y_pred)
+
+
+
